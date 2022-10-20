@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eastcom_sw.demo.mapper.SysTenantMapper">
+    
+    <resultMap  type="SysTenant"         id="SysTenantResult">
+    	<id     property="tenantID"      column="TENANTID"      />
+        <result property="name"          column="NAME_"         />
+        <result property="createTime"    column="CREATE_TIME"   />
+        <result property="creator"       column="CREATOR_"      />
+        <result property="beginTime"     column="BEGIN_TIME"    />
+        <result property="endTime"       column="END_TIME"      />
+        <result property="status"        column="STATUS_"       />
+    </resultMap>
+
+    <!--查询目标-->
+    <sql id="selectSysTenantVo">
+        select TENANTID,NAME_,CREATE_TIME,CREATOR_,BEGIN_TIME,END_TIME,STATUS_
+		from sys_tenant
+    </sql>
+    
+    <!-- 查询条件 -->
+	<sql id="sqlwhereSearch">
+		<where>
+			<if test="tenantId !=null">
+				and TENANTID = #{tenantID}
+			</if>
+		</where>
+	</sql>
+
+    <!-- 查询 -->
+<!--    <select id="selectConfig" parameterType="DemoConfig" resultMap="DemoConfigResult">-->
+<!--        <include refid="selectConfigVo"/>-->
+<!--        <include refid="sqlwhereSearch"/>-->
+<!--    </select>-->
+
+
+<!--    查询列表-->
+    <select id="selectSysTenantList" parameterType="SysTenant" resultMap="SysTenantResult">
+        <include refid="selectSysTenantVo"/>
+        <where>
+			<if test="name != null and name != ''">
+				AND NAME_ = #{name}
+			</if>
+			<if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+				and create_time &gt;= #{params.beginTime}
+			</if>
+			<if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+				and create_time &lt;= #{params.endTime}
+			</if>
+		</where>
+    </select>
+    
+    <select id="checkSysTenantNamedUnique" parameterType="String" resultMap="SysTenantResult">
+        <include refid="selectSysTenantVo"/>
+        where NAME_ = #{name}
+    </select>
+
+<!--    插入数据-->
+    <insert id="xwtInsertSysTenant" parameterType="SysTenant">
+        insert into sys_tenant (
+            TENANTID,
+			<if test="name != null and name != '' ">NAME_,</if>
+			<if test="creator != null and creator != '' ">CREATOR_,</if>
+			<if test="beginTime != null and beginTime != '' ">BEGIN_TIME,</if>
+			<if test="endTime != null and endTime != '' ">END_TIME,</if>
+			<if test="status != null and status != '' ">STATUS_,</if>
+            CREATE_TIME
+        )values(
+            #{tenantID},
+            <if test="name != null and name != '' ">#{name},</if>
+            <if test="creator != null and creator != '' ">#{creator},</if>
+            <if test="beginTime != null and beginTime != '' ">#{beginTime},</if>
+            <if test="endTime != null and endTime != ''">#{endTime},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            #{createTime}
+		)
+    </insert>
+
+
+
+    <update id="updateSysTenant" parameterType="SysTenant">
+        update sys_tenant
+        <set>
+            <if test="name != null and name != ''"> NAME_= #{name},</if>
+            <if test="creator != null and creator != ''">CREATOR_ = #{creator},</if>
+            <if test="beginTime != null and beginTime != ''">Begin_TIME = #{beginTime},</if>
+            <if test="endTime != null and endTime != ''">END_TIME = #{endTime},</if>
+            <if test="status != null and status != ''">STATUS_ = #{status}</if>
+        </set>
+        where TENANTID = #{tenantID}
+    </update>
+
+
+
+    <delete id="deleteSysTenantByID" parameterType="String">
+        delete from sys_tenant where TENANTID = #{tenantID}
+    </delete>
+
+
+<!--    <delete id="deleteConfigByIds" parameterType="Long">-->
+<!--        delete from demo_config where config_id in -->
+<!--        <foreach item="configId" collection="array" open="(" separator="," close=")">-->
+<!--        	#{configId}-->
+<!--        </foreach>-->
+<!--    </delete>-->
+
+    <!--  xwt  根绝id查询-->
+    <select id="selectSysTenantByID" parameterType="String" resultMap="SysTenantResult">
+        <include refid="selectSysTenantVo"/>
+        where TENANTID = #{tenantID}
+    </select>
+
+<!--    &lt;!&ndash;  xwt  根绝comfigName查询&ndash;&gt;-->
+<!--    <select id="xwtSelectConfigByName" parameterType="String" resultMap="DemoConfigResult">-->
+<!--        <include refid="selectConfigVo"></include>-->
+<!--        where config_name = #{configName}-->
+<!--    </select>-->
+
+<!--    &lt;!&ndash;插入新的数据&ndash;&gt;-->
+<!--    <insert id="xwtInsertConfig" parameterType="DemoConfig">-->
+<!--        insert into demo_config (-->
+<!--        config_id,-->
+<!--        <if test="configName != null and configName != '' ">config_name,</if>-->
+<!--        <if test="configKey != null and configKey != '' ">config_key,</if>-->
+<!--        <if test="configValue != null and configValue != '' ">config_value,</if>-->
+<!--        <if test="configType != null and configType != '' ">config_type,</if>-->
+<!--        <if test="createBy != null and createBy != ''">create_by,</if>-->
+<!--        <if test="remark != null and remark != ''">remark,</if>-->
+<!--        create_time-->
+<!--        )values(-->
+<!--        #{configId},-->
+<!--        <if test="configName != null and configName != ''">#{configName},</if>-->
+<!--        <if test="configKey != null and configKey != ''">#{configKey},</if>-->
+<!--        <if test="configValue != null and configValue != ''">#{configValue},</if>-->
+<!--        <if test="configType != null and configType != ''">#{configType},</if>-->
+<!--        <if test="createBy != null and createBy != ''">#{createBy},</if>-->
+<!--        <if test="remark != null and remark != ''">#{remark},</if>-->
+<!--        #{createTime}-->
+<!--        )-->
+<!--    </insert>-->
+
+
+<!--    <select id="xwtSelectAll" resultMap="DemoConfigResult">-->
+<!--        <include refid="selectConfigVo"/>-->
+<!--        <include refid="sqlwhereSearch"/>-->
+<!--    </select>-->
+
+</mapper>

@@ -1,0 +1,6 @@
+target/classes/application.yml
+target/classes/banner.txt
+target/classes/mapper/DemoConfigMapper.xml
+
+# Project exclude paths
+/target/

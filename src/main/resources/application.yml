@@ -1,0 +1,132 @@
+# Tomcat端口
+server:
+  port: 8088
+
+
+spring:
+  main:
+    allow-circular-references: true
+    allow-bean-definition-overriding: true
+  autoconfigure:
+    exclude: com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  cloud:
+    sentinel:
+      filter:
+        # sentinel 在 springboot 2.6.x 不兼容问题的处理
+        enabled: false
+  redis:
+    host: 10.8.132.77
+    database: 9
+    port: 6379
+    password: re#67!gh
+    #cluster:
+      #nodes: 10.8.132.110:16001,10.8.132.110:16002,10.8.132.110:16003,10.8.132.110:16004,10.8.132.110:16005,10.8.132.110:16006
+    
+  datasource:
+    druid:
+      stat-view-servlet:
+        enabled: true
+        loginUsername: admin
+        loginPassword: EasTcom20220708$
+    dynamic:
+      druid:
+        initial-size: 5
+        min-idle: 5
+        maxActive: 20
+        maxWait: 60000
+        timeBetweenEvictionRunsMillis: 60000
+        minEvictableIdleTimeMillis: 300000
+        validationQuery: SELECT 1 FROM DUAL
+        testWhileIdle: true
+        testOnBorrow: false
+        testOnReturn: false
+        poolPreparedStatements: true
+        maxPoolPreparedStatementPerConnectionSize: 20
+        filters: stat,slf4j
+        connectionProperties: druid.stat.mergeSql\=true;druid.stat.slowSqlMillis\=5000
+      datasource:
+        # 主库数据源
+        master:
+          driver-class-name: oracle.jdbc.OracleDriver
+          url: jdbc:oracle:thin:@10.8.132.227:1521:ipmsfs
+          username: firefly
+          password: eastcom
+
+
+
+
+
+
+
+
+# feign 配置
+feign:
+  sentinel:
+    enabled: true
+  okhttp:
+    enabled: true
+  httpclient:
+    enabled: false
+  client:
+    config:
+      default:
+        connectTimeout: 10000
+        readTimeout: 10000
+  compression:
+    request:
+      enabled: true
+    response:
+      enabled: true
+
+# 服务调用token认证配置
+token:
+  # 令牌有效期（默认480分钟）
+  expireTime: 480
+
+# mybatis配置
+mybatis:
+    # 搜索指定包别名
+    typeAliasesPackage: com.eastcom_sw.demo
+    # 配置mapper的扫描，找到所有的mapper.xml映射文件
+    mapperLocations: classpath:mapper/**/*.xml
+
+
+# 安全配置
+security:
+  # 防止XSS攻击
+  xss:
+    enabled: false
+    excludeUrls:
+      - /system/notice
+  # 跳过token校验白名单
+  ignore:
+    whites:
+      - /swagger-ui/**
+      - /swagger-resources/**
+      - /v2/api-docs
+      - /csrf
+      
+# swagger配置
+swagger:
+  title: 系统接口文档
+  license: Powered By 杭州东方通信软件技术有限公司
+  licenseUrl: http://www.eastcom-sw.com
+
+
+
+# pagehelper分页插件配置
+pagehelper:
+  helperDialect: oracle
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
+
+# 萤火虫系统管理服务,配置为调用相关接口
+firefly:
+  service:
+    prefixUrl: http://10.8.132.108:8080
+

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.eastcom_sw</groupId>
+        <artifactId>firefly-cloud</artifactId>
+        <version>1.1.0</version>
+    </parent>
+    
+    <groupId>com.eastcom_sw</groupId>
+    <artifactId>firefly-demo-local</artifactId>
+    <version>1.0</version>
+    <description>服务脚手架样例</description>	
+
+    <dependencies>			
+        <!-- Swagger UI -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${swagger.fox.version}</version>
+        </dependency>
+		
+        
+        <!-- 数据源 -->
+        <dependency>
+            <groupId>com.eastcom_sw</groupId>
+            <artifactId>firefly-cloud-common-datasource</artifactId>
+        </dependency>
+        
+        
+        <!-- 接口调用日志记录 -->
+        <dependency>
+            <groupId>com.eastcom_sw</groupId>
+            <artifactId>firefly-cloud-common-log</artifactId>
+        </dependency>
+        
+        <!-- Swagger -->
+        <dependency>
+            <groupId>com.eastcom_sw</groupId>
+            <artifactId>firefly-cloud-common-swagger</artifactId>
+        </dependency>
+
+         <!-- 接口安全认证 -->
+        <dependency>
+            <groupId>com.eastcom_sw</groupId>
+            <artifactId>firefly-cloud-common-gateway</artifactId>
+        </dependency>
+
+        <!-- Mysql 驱动 -->
+        <!--dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.28</version>
+        </dependency-->
+
+        <!-- oracle驱动 -->
+        <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>ojdbc6</artifactId>
+            <version>11.2.0.3</version>
+        </dependency>
+
+        <!-- hutool工具类 -->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-core</artifactId>
+            <version>5.8.0.M3</version>
+        </dependency>
+
+
+        <!--MyBatis 分页插件: MyBatis PageHelper-->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper-spring-boot-starter</artifactId>
+            <version>1.2.5</version>
+        </dependency>
+
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+   
+</project>
